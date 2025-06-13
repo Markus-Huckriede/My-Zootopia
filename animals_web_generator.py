@@ -1,38 +1,37 @@
 import json
 
+with open("animals_template.html", "r") as file:
+    template = file.read()
+
+
 def load_data(file_path):
-  """ Loads a JSON file """
-  with open(file_path, "r") as handle:
-    return json.load(handle)
+    with open(file_path, "r") as handle:
+        return json.load(handle)
 
 
-def read_animals_data(animals_data):
-    for animal in animals_data:
-        name = animal.get("name")
-        taxonomy = animal.get("taxonomy")
-        order = taxonomy.get("order")
-        locations = animal.get("locations")
-        typ = animal.get("type")
-
-        if name:
-            print(f"Name: {name}")
-        if order:
-            print(f"Diet: {order}")
-        if locations and len(locations) > 0:
-            print(f"Location: {locations[0]}")
-        if typ:
-            print(f"Type: {typ}")
-        print()
+def read_animals_data(data):
+    output = ""
+    for animal in data:
+        output += '<li class="cards__item">'
+        output += f'<h2 class="card__title">{animal["name"]}</h2>'
+        output += '<div class="card__text">'
+        output += f'Diet: {animal["characteristics"]["diet"]}<br>'
+        output += f'Location: {animal["locations"][0]}<br>'
+        output += f'Type: {animal["taxonomy"]["class"]}'
+        output += '</div>'
+        output += '</li>'
+    return output
 
 
 def main():
-    animals_data = load_data('animals_data.json')
-    read_animals_data(animals_data)
+    animals_data = load_data("animals_data.json")
+    animals_info = read_animals_data(animals_data)
+    new_html = template.replace("__REPLACE_ANIMALS_INFO__", animals_info)
 
+    with open("animals.html", "w") as file:
+        file.write(new_html)
+
+    print("animals.html wurde erstellt.")
 
 if __name__ == "__main__":
     main()
-
-
-
-
