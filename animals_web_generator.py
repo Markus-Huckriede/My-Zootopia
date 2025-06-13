@@ -31,7 +31,6 @@ def main():
     with open("animals.html", "w") as file:
         file.write(new_html)
 
-    print("animals.html wurde erstellt.")
 
 if __name__ == "__main__":
     main()
